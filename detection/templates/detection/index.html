@@ -7,7 +7,10 @@
 
         </video>
     </div>
+    <button id="send_button" type="button" class="btn btn-primary" onclick="sendImage()">Send</button>
+    <canvas id="c" style="display:none;" width="300" height="300"></canvas>
 <script>
+
     var video = document.querySelector("#videoElement");
 
     if (navigator.mediaDevices.getUserMedia) {
@@ -18,6 +21,24 @@
             .catch(function (err0r) {
                 console.log("Something went wrong!");
             });
+    }
+
+    function sendImage(){
+        var canvas = document.getElementById("c");
+        var video = document.getElementById("videoElement");
+        canvas.getContext("2d").drawImage(video, 0, 0, 300, 300, 0, 0, 300, 300);
+        var img = canvas.toDataURL("image/png");
+        console.log('enviando imagen!');
+        let data = {image: img};
+
+        fetch("/image/", {
+            method: "POST",
+            body: JSON.stringify(data)
+        }).then(res => {
+            console.log("Complete, Response: ", res);
+        });
+        //var dataURL = document.getElementById('videoElement').toDataURL("image/png");
+        //document.getElementById('id_hidden_image_field').value = dataURL;
     }
 </script>
 {% endblock %}
