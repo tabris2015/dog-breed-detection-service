@@ -15,7 +15,7 @@ For installing, follow the steps:
   4. Clone this repo:
     ```
     git clone https://github.com/tabris2015/dog-breed-detection-service.git
-    cd dog-breed-detection-service
+    && cd dog-breed-detection-service
     ```
     
   5. Create virtual environment:
