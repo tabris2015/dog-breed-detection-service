@@ -8,6 +8,13 @@
         </video>
     </div>
     <button id="send_button" type="button" class="btn btn-primary" onclick="sendImage()">Send</button>
+    <h2>Animal:</h2>
+    <h3 id="animal">-</h3>
+    <h2>Animal:</h2>
+    <h3 id="raza">-</h3>
+    <h3 id="top1">-</h3>
+    <h3 id="top2">-</h3>
+    <h3 id="top3">-</h3>
     <canvas id="c" style="display:none;" width="300" height="300"></canvas>
 <script>
 
@@ -35,7 +42,15 @@
             method: "POST",
             body: JSON.stringify(data)
         }).then(res => {
-            console.log("Complete, Response: ", res);
+            res.json().then(json => {
+                    console.log('prediccion:', json);
+                    document.getElementById("animal").innerHTML = json["animal"];
+                    document.getElementById("raza").innerHTML = json["raza"]["main"];
+                    document.getElementById("top1").innerHTML = json["raza"]["1"];
+                    document.getElementById("top2").innerHTML = json["raza"]["2"];
+                    document.getElementById("top3").innerHTML = json["raza"]["3"];
+                }
+            );
         });
         //var dataURL = document.getElementById('videoElement').toDataURL("image/png");
         //document.getElementById('id_hidden_image_field').value = dataURL;
