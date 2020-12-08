@@ -7,7 +7,7 @@ from PIL import Image
 
 
 # archivo a predecir
-file = '../data/test_data/gato2.jpg'
+file = '../data/images/perro1.jpg'
 
 # obtener etiquetas
 _, breed_info = tfds.load(
@@ -39,5 +39,5 @@ res = predict_image(file, cats_dogs_model, cats_dogs_info, show_image=False)
 print(f'Animal: {res}')
 # si es perro detectar raza
 if res == 'dog':
-    breed = predict_image(file, cats_dogs_model, cats_dogs_info, show_image=False)
+    breed = predict_image(file, dogs_model, breed_info, show_image=False)
     print(f'Raza: {breed}')
