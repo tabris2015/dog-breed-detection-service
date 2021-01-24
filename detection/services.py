@@ -64,7 +64,7 @@ class Predictor(object):
 
     def predict(self, img):
         res = self.predict_img(img, self.cats_dogs_model, self.cats_dogs_info)
-        breed = ''
+        breed = {'main': 'cat '}
         if res == 'dog':
             breed = self.predict_img(img, self.dogs_model, self.dogs_info, return_dict=True)
         return {'animal': res, 'raza': breed}
