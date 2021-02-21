@@ -33,7 +33,8 @@
     function sendImage(){
         var canvas = document.getElementById("c");
         var video = document.getElementById("videoElement");
-        canvas.getContext("2d").drawImage(video, 0, 0, 300, 300, 0, 0, 300, 300);
+        // capturar cuadrado
+        canvas.getContext("2d").drawImage(video, 0, 0, video.videoHeight, video.videoHeight, 0, 0, 300, 300);
         var img = canvas.toDataURL("image/png");
         console.log('enviando imagen!');
         let data = {image: img};
