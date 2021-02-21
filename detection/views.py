@@ -43,5 +43,13 @@ def receive_image(request):
             None
         )
     )
+    res['id'] = detection.id
     print(res)
     return JsonResponse(res)
+
+
+@csrf_exempt
+def receive_feedback(request):
+    # receiving feedback
+    print(request.body)
+    return JsonResponse({'status': 'received!'})

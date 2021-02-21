@@ -3,19 +3,36 @@
 {% block content %}
     <h1>Hola bola</h1>
     <div id="container">
-        <video autoplay="true" id="videoElement">
+        <div class="row">
+            <div class="col-sm">
+                <video autoplay="true" id="videoElement"></video>
+            </div>
 
-        </video>
+            <div class="col-sm">
+                <button id="send_button" type="button" class="btn btn-primary" onclick="sendImage()">Detect</button>
+                <div>
+                    <input type="radio" id="excelente" name="gender" value="excelente">
+                    <label for="excelente">Excelente</label><br>
+                    <input type="radio" id="bueno" name="gender" value="bueno">
+                    <label for="bueno">Bueno</label><br>
+                    <input type="radio" id="malo" name="gender" value="malo">
+                    <label for="malo">Malo</label>
+                    <br>
+                    <button id="evaluate_button" type="button" class="btn btn-secondary" onclick="sendFeedback()">Evaluar</button>
+                </div>
+                <h2>Animal:</h2>
+                <h3 id="animal">-</h3>
+                <h2>Raza:</h2>
+                <h3 id="raza">-</h3>
+                <h3 id="top1">-</h3>
+                <h3 id="top2">-</h3>
+                <h3 id="top3">-</h3>
+                <h4 id="detection_id">-</h4>
+                <canvas id="c" style="display:none;" width="300" height="300"></canvas>
+            </div>
+        </div>
     </div>
-    <button id="send_button" type="button" class="btn btn-primary" onclick="sendImage()">Detect</button>
-    <h2>Animal:</h2>
-    <h3 id="animal">-</h3>
-    <h2>Raza:</h2>
-    <h3 id="raza">-</h3>
-    <h3 id="top1">-</h3>
-    <h3 id="top2">-</h3>
-    <h3 id="top3">-</h3>
-    <canvas id="c" style="display:none;" width="300" height="300"></canvas>
+
 <script>
 
     var video = document.querySelector("#videoElement");
@@ -42,19 +59,37 @@
         fetch("/image/", {
             method: "POST",
             body: JSON.stringify(data)
-        }).then(res => {
-            res.json().then(json => {
-                    console.log('prediccion:', json);
-                    document.getElementById("animal").innerHTML = json["animal"];
-                    document.getElementById("raza").innerHTML = json["raza"]["main"];
-                    document.getElementById("top1").innerHTML = json["raza"]["1"];
-                    document.getElementById("top2").innerHTML = json["raza"]["2"];
-                    document.getElementById("top3").innerHTML = json["raza"]["3"];
-                }
-            );
-        });
+        })
+            .then(res => res.json())
+            .then(json => {
+                console.log('prediccion:', json);
+                document.getElementById("animal").innerHTML = json["animal"];
+                document.getElementById("raza").innerHTML = json["raza"]["main"];
+                document.getElementById("top1").innerHTML = json["raza"]["1"];
+                document.getElementById("top2").innerHTML = json["raza"]["2"];
+                document.getElementById("top3").innerHTML = json["raza"]["3"];
+                document.getElementById("detection_id").innerHTML = json["id"];
+            })
+
         //var dataURL = document.getElementById('videoElement').toDataURL("image/png");
         //document.getElementById('id_hidden_image_field').value = dataURL;
+    }
+
+    function sendFeedback(){
+        // get id of detection
+        let detection_id = parseInt(document.getElementById("detection_id").innerHTML);
+        let rating = 2;
+
+        let feedback = {
+            id: detection_id,
+            rating: rating
+        };
+        console.log(feedback);
+        fetch("/feedback/", {
+            method: "POST",
+            body: JSON.stringify(feedback)
+        }).then(res => res.json())
+        .then(json => console.log(json));
     }
 </script>
 {% endblock %}
